@@ -3,7 +3,7 @@
 #include "stb_image.h"
 
 void renderer_prepare(void) {
-	SDL_SetRenderDrawColor(app.renderer, 6, 7, 9, 255);
+	SDL_SetRenderDrawColor(app.renderer, 0, 0, 0, 255);
 	SDL_RenderClear(app.renderer);
 }
 
@@ -70,12 +70,13 @@ SDL_Texture *load_texture(char *filename) {
 }
 
 void blit(SDL_Texture *texture, int x, int y) {
-	SDL_Rect dest;
-
-	dest.x = x;
-	dest.y = y;
+	SDL_Rect dest = {.x = x, .y = y};
 	SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+	SDL_RenderCopy(app.renderer, texture, NULL, &dest);
+}
 
+void blit_scaled(SDL_Texture *texture, int x, int y, int w, int h) {
+	SDL_Rect dest = { .x = x, .y = y, .w = w, .h = h };
 	SDL_RenderCopy(app.renderer, texture, NULL, &dest);
 }
 
@@ -88,3 +89,11 @@ void blit_rect(SDL_Texture *texture, SDL_Rect *src, int x, int y) {
     };
 	SDL_RenderCopy(app.renderer, texture, src, &dest);
 }
+
+void blit_rect_scaled(SDL_Texture *texture, SDL_Rect *src, int x, int y, int w, int h) {
+	SDL_Rect dest = { .x = x, .y = y, .w = w, .h = h };
+	SDL_RenderCopy(app.renderer, texture, src, &dest);
+}
+
+
+

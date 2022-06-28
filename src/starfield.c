@@ -31,11 +31,14 @@ void starfield_update(void) {
 }
 
 void starfield_render(void) {
+	SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_BLEND);
     for (int i=0; i<MAX_STARS; ++i) {
         Star *s = &stars[i];
-		int c = 32 * s->speed;
-		SDL_SetRenderDrawColor(app.renderer, c, c, c, 255);
+		int a = s->speed * 255/4;
+
+		SDL_SetRenderDrawColor(app.renderer, 120, 120, 120, a);
 		SDL_RenderDrawLine(app.renderer, s->x, s->y, s->x + s->w, s->y);
     }
+	SDL_SetRenderDrawBlendMode(app.renderer, SDL_BLENDMODE_NONE);
 }
 

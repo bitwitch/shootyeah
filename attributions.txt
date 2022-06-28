@@ -1,0 +1,14 @@
+PlayerShip.png
+mars.png
+  - from Prototype by X-Out, code unrotted by Fabien Sanglard can be found here:
+    https://github.com/fabiensanglard/Prototype
+
+alienBullet.png
+enemy.png
+explosion.png
+player.png
+playerBullet.png
+  - from Parallel Realities: https://www.parallelrealities.co.uk
+
+stb_image.h
+  - by Sean Barrett: https://github.com/nothings/stb/

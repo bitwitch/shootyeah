@@ -64,7 +64,9 @@ SDL_Texture *bullet_texture       = {0};
 SDL_Texture *enemy_bullet_texture = {0};
 SDL_Texture *enemy_texture        = {0};
 SDL_Texture *explosion_texture    = {0};
+SDL_Texture *mars_texture         = {0};
 
+static int mars_x, mars_y, mars_w, mars_h, mars_move_delay;
 static int bullet_width, bullet_height;
 static int reset_timer;
 
@@ -88,6 +90,9 @@ static void add_debris(Entity *e);
 static void debris_update(void);
 static void debris_render(void);
 
+static void background_init(void);
+static void background_update(void);
+static void background_render(void);
 
 void game_init(void) {
     player.speed = 4.0f;
@@ -103,6 +108,11 @@ void game_init(void) {
 
     explosion_texture = load_texture("assets/explosion.png");
     SDL_SetTextureBlendMode(explosion_texture, SDL_BLENDMODE_ADD);
+
+    mars_texture = load_texture("assets/mars.png");
+    background_init();
+
+    starfield_init();
 
     game_reset();
 }
@@ -148,7 +158,6 @@ static void game_reset(void) {
     }
     debris_tail = &debris_head;
 
-    starfield_init();
 
     reset_timer = FPS * 2;
 }
@@ -171,6 +180,7 @@ void game_update(void) {
         explosions_update();
         debris_update();
         starfield_update();
+        background_update();
         if (player.health <= 0 && reset_timer-- < 0)
             game_reset();
         accumulator -= TIME_STEP;
@@ -180,6 +190,7 @@ void game_update(void) {
 }
 
 void game_render(void) {
+    background_render();
     starfield_render();
 
     // draw ships
@@ -487,5 +498,31 @@ static void debris_render(void) {
         blit_rect(d->texture, &d->rect, d->x, d->y);
 		SDL_SetTextureAlphaMod(d->texture, 255);
     }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// BACKGROUND
+//////////////////////////////////////////////////////////////////////////////
+static void background_init(void) {
+    int w, h;
+    SDL_QueryTexture(mars_texture, NULL, NULL, &w, &h);
+    mars_move_delay = 8;
+    mars_x = 0.6*SCREEN_WIDTH;
+    mars_y = 0;
+    mars_h = SCREEN_HEIGHT;
+    mars_w = (w / (float)h) * SCREEN_HEIGHT;
+}
+
+static void background_update(void) {
+    static int mars_move_timer = 0;
+    if (mars_move_timer-- <= 0) {
+        --mars_x;
+        mars_move_timer = mars_move_delay;
+    }
+}
+
+static void background_render(void) {
+    if (mars_x > -mars_w && mars_x < SCREEN_WIDTH)
+        blit_scaled(mars_texture, mars_x, mars_y, mars_w, mars_h);
 }
 
