@@ -3,11 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+      .stage {
+        width: 100%;
+        max-width: 1280px;
+        margin: auto;
+      }
+      #canvas { width: 100%; }
+    </style>
   </head>
   <body>
-    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    <p>Well, hello friends</p>
-
+    <div class="stage">
+      <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+      <p>Arrow Keys - move</p>
+      <p>X - fire</p>
+    </div>
     <script type="text/javascript">
       var Module = {
         canvas: (function() { return document.getElementById('canvas'); })()
