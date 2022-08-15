@@ -1,3 +1,8 @@
+#if BUILD_MODE_WASM
+#include <emscripten.h>
+EMSCRIPTEN_KEEPALIVE
+#endif
+
 #include <stdio.h>
 #include "app.h"
 #include "game.h"
@@ -20,6 +25,9 @@ int main(void) {
         game_update();
         game_render();
         renderer_present();
+#if BUILD_MODE_WASM
+        emscripten_sleep(0);
+#endif
     }
 
     return 0;
